@@ -1,4 +1,4 @@
-# ClinicsHub Android
+# Clinics Hub App
 
 ![Status](https://img.shields.io/badge/Status-Under%20Construction-orange)
 ![Platform](https://img.shields.io/badge/Platform-Android-green)
@@ -26,25 +26,7 @@ The application is currently under development.
 - Navigation Component
 - RecyclerView
 - Material Design
-
-## Project Structure
-
-```text
-app/
- └── src/main/
-     ├── java/com/ranamustafa/clinicshub/
-     │   ├── ui/
-     │   │   ├── main/
-     │   │   ├── projects/
-     │   │   ├── login/
-     │   │   └── about/
-     │   └── data/
-     └── res/
-         ├── layout/
-         ├── navigation/
-         ├── menu/
-         └── values/
-```
+ 
 
 ## Development Status
 
