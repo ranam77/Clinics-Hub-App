@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Clinics Hub</string>
+    <string name="projects_title">Choose Your Clinic</string>
+    <string name="projects_subtitle">Select a clinic to continue</string>
+    <string name="clinic_image_description">Clinic image</string>
+    <string name="loading_projects">Loading clinics...</string>
+    <string name="under_construction">Under Construction</string>
+    <string name="coming_soon"> Were working on something great. Coming soon!</string>
+    <!-- Errors -->
+    <string name="error_loading_projects">Unable to load clinics. Please try again.</string>
+    <string name="error_network">Network connection error. Check your internet connection.</string>
+    <string name="retry">Retry</string>
+
+    <!-- General -->
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="no_data_available">No clinics available.</string>
+    <string name="no_projects">No Projects</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_login">Login</string>
+    <string name="menu_about">About</string>
+
+</resources>
