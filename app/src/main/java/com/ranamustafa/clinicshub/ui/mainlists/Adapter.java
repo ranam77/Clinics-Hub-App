@@ -1,39 +1,38 @@
 
-package com.ranamustafa.clinicshub.ui.projects;
-
+package com.ranamustafa.clinicshub.ui.mainlists;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
 import com.ranamustafa.clinicshub.R;
 import com.ranamustafa.clinicshub.data.api.ApiClient;
-import com.ranamustafa.clinicshub.data.model.Project;
+import com.ranamustafa.clinicshub.data.model.ListModel;
+import com.ranamustafa.clinicshub.ui.main.MainActivity;
+import com.ranamustafa.clinicshub.utils.AppLogger;
 
 import java.util.Objects;
 
-public class ProjectsAdapter
-        extends ListAdapter<Project, ProjectsAdapter.ProjectViewHolder> {
+public class Adapter extends ListAdapter<ListModel, Adapter.ProjectViewHolder> {
     private final OnProjectClickListener listener;
+    private static final String TAG = Adapter.class.getSimpleName();
     public interface OnProjectClickListener {
-        void onProjectClick(Project project);
+        void onProjectClick(ListModel project);
     }
-    private static final DiffUtil.ItemCallback<Project> DIFF_CALLBACK =
-            new DiffUtil.ItemCallback<Project>() {
+    private static final DiffUtil.ItemCallback<ListModel> DIFF_CALLBACK =
+            new DiffUtil.ItemCallback<ListModel>() {
                 @Override
-                public boolean areItemsTheSame(@NonNull Project oldItem,@NonNull Project newItem) {
+                public boolean areItemsTheSame(@NonNull ListModel oldItem,@NonNull ListModel newItem) {
                     return oldItem.getId() == newItem.getId();
                 }
 
                 @Override
-                public boolean areContentsTheSame(@NonNull Project oldItem,@NonNull Project newItem) {
+                public boolean areContentsTheSame(@NonNull ListModel oldItem,@NonNull ListModel newItem) {
                     return Objects.equals(
                             oldItem.getName(), newItem.getName())
                             && Objects.equals(
@@ -41,26 +40,21 @@ public class ProjectsAdapter
                 }
             };
 
-    public ProjectsAdapter(OnProjectClickListener listener) {
+    public Adapter(OnProjectClickListener listener ) {
         super(DIFF_CALLBACK);
         this.listener = listener;
     }
 
     @NonNull
     @Override
-    public ProjectViewHolder onCreateViewHolder(
-            @NonNull ViewGroup parent,
-            int viewType) {
-
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_project, parent, false);
-
+    public ProjectViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.listmodel_item, parent, false);
         return new ProjectViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ProjectViewHolder holder,int position) {
-        Project project = getItem(position);
+        ListModel project = getItem(position);
         holder.bind(project, listener);
     }
 
@@ -73,19 +67,19 @@ public class ProjectsAdapter
             ivProject = itemView.findViewById(R.id.ivProject);
         }
 
-        void bind(Project project, OnProjectClickListener listener) {
-
-            tvProjectName.setText(project.getName());
-            String imageUrl = ApiClient.IMAGE_BASE_URL + project.getImageUrl();
-            Glide.with(ivProject)
-                    .load(imageUrl)
-                    .centerCrop()
-                    .placeholder(R.drawable.notfound)
-                    .error(R.drawable.notfound)
-                    .into(ivProject);
-
-            itemView.setOnClickListener(v ->
-                    listener.onProjectClick(project));
+        void bind(ListModel project, OnProjectClickListener listener) {
+            try {
+                tvProjectName.setText(project.getName());
+                String imageUrl = ApiClient.IMAGE_BASE_URL + project.getImageUrl();
+                Glide.with(ivProject)
+                        .load(imageUrl)
+                        .centerCrop()
+                        .into(ivProject);
+                itemView.setOnClickListener(v -> listener.onProjectClick(project));
+            }catch (Exception e)
+            {
+                AppLogger.logError(TAG, "bind",e);
+            }
         }
     }
 }

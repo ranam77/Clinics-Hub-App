@@ -15,14 +15,14 @@
         android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/ivProject"
+            android:id="@+id/ivdoctor"
             android:layout_width="match_parent"
             android:layout_height="135dp"
             android:scaleType="centerCrop"
-            android:contentDescription="@string/clinic_image_description" />
+            android:contentDescription="@string/doctor_image_description" />
 
         <TextView
-            android:id="@+id/tvProjectName"
+            android:id="@+id/doctorName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="12dp"

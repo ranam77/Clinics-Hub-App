@@ -1,5 +1,8 @@
 package com.ranamustafa.clinicshub.data.api;
 
+import com.ranamustafa.clinicshub.data.repository.ClinicRepository;
+import com.ranamustafa.clinicshub.utils.AppLogger;
+
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -9,16 +12,20 @@ public class ApiClient {
     public static final String IMAGE_BASE_URL = BASE_URL + "images/";
     private static Retrofit retrofit;
     private static ApiService apiService;
+    private static final String TAG = ApiClient.class.getSimpleName();
     public static ApiService getApiService() {
+        try {
+            if (apiService == null) {
 
-        if (apiService == null) {
+                retrofit = new Retrofit.Builder()
+                        .baseUrl(BASE_URL)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
 
-            retrofit = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-
-            apiService = retrofit.create(ApiService.class);
+                apiService = retrofit.create(ApiService.class);
+            }
+        }catch (Exception e) {
+            AppLogger.logError(TAG, "getApiService",e);
         }
 
         return apiService;

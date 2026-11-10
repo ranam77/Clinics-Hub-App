@@ -2,13 +2,11 @@ package com.ranamustafa.clinicshub.data.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Project {
+public class ListModel {
         @SerializedName("id")
         private int id;
-
         @SerializedName("name")
         private String name;
-
         @SerializedName("imageUrl")
         private String imageUrl;
 

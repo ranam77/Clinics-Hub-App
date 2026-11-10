@@ -3,11 +3,18 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/projectsFragment">
-
+    app:startDestination="@id/nav_host_fragment">
     <fragment
-        android:id="@+id/projectsFragment"
-        android:name="com.ranamustafa.clinicshub.ui.projects.ProjectsFragment"
-        android:label="Projects" />
+        android:id="@+id/mainFragment"
+        android:name="com.ranamustafa.clinicshub.ui.mainlists.mainFragment"
+        android:label="Main" />
+    <fragment
+        android:id="@+id/specialtyFragment"
+        android:name="com.ranamustafa.clinicshub.ui.specialty.specialtyFragment"
+        android:label="Specialty" />
+    <fragment
+        android:id="@+id/doctorFragment"
+        android:name="com.ranamustafa.clinicshub.ui.doctors.doctorFragment"
+        android:label="Doctor" />
 
 </navigation>
