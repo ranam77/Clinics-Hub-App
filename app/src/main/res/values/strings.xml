@@ -11,7 +11,6 @@
     <string name="error_loading_projects">Unable to load clinics. Please try again.</string>
     <string name="error_network">Network connection error. Check your internet connection.</string>
     <string name="retry">Retry</string>
-
     <!-- General -->
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
@@ -27,5 +26,28 @@
     <string name="no_doctors">No Doctors</string>
     <string name="no_data">No Data</string>
     <string name="doctor_image_description">doctor_image</string>
-
+    <!-- Login -->
+    <string name="login_title">Welcome Back!</string>
+    <string name="login_subtitle">Login to continue to your account</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="username_hint">Enter your username</string>
+    <string name="password_hint">Enter your password</string>
+    <string name="login">LOGIN</string>
+    <!-- Validation -->
+    <string name="username_required">Username is required</string>
+    <string name="password_required">Password is required</string>
+    <!-- Errors -->
+    <string name="login_failed">Login failed</string>
+    <string name="invalid_login_response">Invalid login response.</string>
+    <string name="network_error">Network connection error.</string>
+    <!-- Footer -->
+    <string name="copyright">ClinicShub © 2026</string>
+    <string name="logout">Logout</string>
+    <string name="no_slots">No slots</string>
+    <string name="avSlots">Avaliable Slots</string>
+    <string name="dialogtitle">Login Required</string>
+    <string name="dialogloginmsg">Please login first to view available appointment slots.</string>
+    <string name="dialogbtn">Go to Login</string>
+    <string name="cancelbtn">Cancel</string>
 </resources>

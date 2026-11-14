@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.ranamustafa.clinicshub.data.model.ListModel;
 import com.ranamustafa.clinicshub.data.repository.ClinicRepository;
 import com.ranamustafa.clinicshub.data.repository.ProjectRepository;
-import com.ranamustafa.clinicshub.utils.AppLogger;
+import com.ranamustafa.clinicshub.utils.errors.ErrorHandler;
 
 import java.util.List;
 
@@ -68,7 +68,7 @@ public class ViewModel extends androidx.lifecycle.ViewModel {
             }
         }
         catch (Exception e){
-            AppLogger.logError(TAG, "loadData",e);
+            ErrorHandler.handle(TAG, e);
         }
     }
 }

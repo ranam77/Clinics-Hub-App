@@ -10,7 +10,8 @@ import com.bumptech.glide.Glide;
 import com.ranamustafa.clinicshub.R;
 import com.ranamustafa.clinicshub.data.api.ApiClient;
 import com.ranamustafa.clinicshub.data.model.DoctorModel;
-import com.ranamustafa.clinicshub.utils.AppLogger;
+import com.ranamustafa.clinicshub.utils.errors.ErrorHandler;
+
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -84,7 +85,7 @@ public class doctorAdapter extends ListAdapter<DoctorModel, doctorAdapter.Doctor
                         listener.onProjectClick(item));
             }catch (Exception e)
             {
-                AppLogger.logError(TAG, "bind",e);
+                ErrorHandler.handle(TAG, e);
             }
 
         }

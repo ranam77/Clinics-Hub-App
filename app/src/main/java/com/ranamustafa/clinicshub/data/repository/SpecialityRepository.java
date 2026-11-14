@@ -3,9 +3,9 @@ package com.ranamustafa.clinicshub.data.repository;
 
 import com.ranamustafa.clinicshub.data.api.ApiClient;
 import com.ranamustafa.clinicshub.data.api.ApiService;
-import com.ranamustafa.clinicshub.data.model.ListModel;
 import com.ranamustafa.clinicshub.data.model.SpecialtyModel;
-import com.ranamustafa.clinicshub.utils.AppLogger;
+ import com.ranamustafa.clinicshub.utils.errors.ErrorHandler;
+import com.ranamustafa.clinicshub.utils.errors.ApiResult;
 
 import java.util.List;
 
@@ -34,20 +34,28 @@ public class SpecialityRepository {
                     if (response.isSuccessful() && response.body() != null) {
                         callback.onSuccess(response.body());
                     } else {
-                        callback.onError("Unable to load clinics. HTTP error: " + response.code());
+                        ApiResult<?> apiResult =  ErrorHandler.handleHttpError(TAG ,response.code());
+                        callback.onError(apiResult.getMessage());
                     }
                 }
-
                 @Override
                 public void onFailure(Call<List<SpecialtyModel>> call, Throwable t) {
-                    String message = t.getMessage();
-                    callback.onError(message != null ? message : "Network connection error."
-                    );
+                    String message = "";
+                    if (t instanceof Exception) {
+                        Exception exception = (Exception) t;
+                        ApiResult<?> apiResult =  ErrorHandler.handle(TAG ,exception);
+                        message = apiResult.getMessage();
+                    }
+                    else
+                    {
+                        ApiResult<?> apiResult =  ErrorHandler.handleThrowable(TAG ,t);
+                        message = apiResult.getMessage();
+                    }
+                    callback.onError(message);
                 }
             });
         } catch (Exception e) {
-            AppLogger.logError(TAG, "getData",e);
+             ErrorHandler.handle(TAG ,e);
         }
-
     }
 }

@@ -8,20 +8,18 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
-import androidx.navigation.NavGraph;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ranamustafa.clinicshub.R;
 import com.ranamustafa.clinicshub.data.model.ListModel;
-import com.ranamustafa.clinicshub.utils.AppLogger;
+import com.ranamustafa.clinicshub.utils.errors.ErrorHandler;
 
 import java.util.List;
 
@@ -102,7 +100,7 @@ public class mainFragment extends androidx.fragment.app.Fragment {
         }
         catch (Exception e)
         {
-            AppLogger.logError(TAG, "setupRecyclerView",e);
+            ErrorHandler.handle(TAG, e);
         }
 
     }
@@ -120,7 +118,7 @@ public class mainFragment extends androidx.fragment.app.Fragment {
         }
         catch (Exception e)
         {
-            AppLogger.logError(TAG, "observeViewModel",e);
+            ErrorHandler.handle(TAG, e);
         }
     }
 
@@ -133,7 +131,7 @@ public class mainFragment extends androidx.fragment.app.Fragment {
         }
         catch (Exception e)
         {
-            AppLogger.logError(TAG, "updateProjects",e);
+            ErrorHandler.handle(TAG, e);
         }
     }
 

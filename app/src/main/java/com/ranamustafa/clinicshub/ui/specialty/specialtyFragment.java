@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.ranamustafa.clinicshub.R;
 import com.ranamustafa.clinicshub.data.model.SpecialtyModel;
-import com.ranamustafa.clinicshub.utils.AppLogger;
+import com.ranamustafa.clinicshub.utils.errors.ErrorHandler;
 
 import java.util.List;
 
@@ -97,7 +97,7 @@ public class specialtyFragment extends androidx.fragment.app.Fragment {
         }
         catch (Exception e)
         {
-           AppLogger.logError(TAG, "observeViewModel",e);
+            ErrorHandler.handle(TAG, e);
         }
 
     }
@@ -111,7 +111,7 @@ public class specialtyFragment extends androidx.fragment.app.Fragment {
         }
         catch (Exception e)
         {
-            AppLogger.logError(TAG, "updateitems",e);
+            ErrorHandler.handle(TAG, e);
         }
     }
 

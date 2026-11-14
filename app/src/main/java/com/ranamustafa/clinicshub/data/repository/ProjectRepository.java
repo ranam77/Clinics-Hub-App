@@ -4,7 +4,8 @@ package com.ranamustafa.clinicshub.data.repository;
 import com.ranamustafa.clinicshub.data.api.ApiClient;
 import com.ranamustafa.clinicshub.data.api.ApiService;
 import com.ranamustafa.clinicshub.data.model.ListModel;
-import com.ranamustafa.clinicshub.utils.AppLogger;
+ import com.ranamustafa.clinicshub.utils.errors.ErrorHandler;
+import com.ranamustafa.clinicshub.utils.errors.ApiResult;
 
 import java.util.List;
 
@@ -29,22 +30,33 @@ public class ProjectRepository {
             try {
                 apiService.getProjects().enqueue(new Callback<List<ListModel>>() {
                     @Override
-                    public void onResponse(Call<List<ListModel>> call,Response<List<ListModel>> response) {
+                    public void onResponse(Call<List<ListModel>> call, Response<List<ListModel>> response) {
                         if (response.isSuccessful() && response.body() != null) {
                             callback.onSuccess(response.body());
-                        } else { callback.onError("Unable to load projects. HTTP error: "+ response.code());
+                        } else {
+                            ApiResult<?> apiResult =  ErrorHandler.handleHttpError(TAG ,response.code());
+                            callback.onError(apiResult.getMessage());
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<List<ListModel>> call,Throwable throwable) {
-                        String message = throwable.getMessage();
-                        callback.onError( message != null? message : "Network connection error."
-                        );
+                    public void onFailure(Call<List<ListModel>> call, Throwable t) {
+                        String message = "";
+                        if (t instanceof Exception) {
+                            Exception exception = (Exception) t;
+                            ApiResult<?> apiResult =  ErrorHandler.handle(TAG ,exception);
+                            message = apiResult.getMessage();
+                        }
+                        else
+                        {
+                            ApiResult<?> apiResult = ErrorHandler.handleThrowable(TAG ,t);
+                            message = apiResult.getMessage();
+                        }
+                        callback.onError(message);
                     }
                 });
             } catch (Exception e) {
-                AppLogger.logError(TAG, "getProjects",e);
+                ErrorHandler.handle(TAG ,e);
             }
         }
 

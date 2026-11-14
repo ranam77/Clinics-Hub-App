@@ -1,4 +1,4 @@
-package com.ranamustafa.clinicshub.utils.network;
+package com.ranamustafa.clinicshub.utils.errors;
 
 public class ApiResult<T> {
 
@@ -29,6 +29,7 @@ public class ApiResult<T> {
     }
 
     public static <T> ApiResult<T> error(String message, int code) {
+        //to do send to server here
         return new ApiResult<>(Status.ERROR, null, message, code);
     }
 

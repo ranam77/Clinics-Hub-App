@@ -2,11 +2,8 @@
 package com.ranamustafa.clinicshub.ui.doctors;
 
 import com.ranamustafa.clinicshub.data.model.DoctorModel;
-import com.ranamustafa.clinicshub.data.model.ListModel;
-import com.ranamustafa.clinicshub.data.repository.ClinicRepository;
 import com.ranamustafa.clinicshub.data.repository.DoctorRepository;
-import com.ranamustafa.clinicshub.data.repository.ProjectRepository;
-import com.ranamustafa.clinicshub.utils.AppLogger;
+import com.ranamustafa.clinicshub.utils.errors.ErrorHandler;
 
 import java.util.List;
 
@@ -51,7 +48,7 @@ public class doctorViewModel extends androidx.lifecycle.ViewModel {
         }
         catch (Exception e)
         {
-            AppLogger.logError(TAG, "loadData",e);
+            ErrorHandler.handle(TAG, e);
         }
     }
 }

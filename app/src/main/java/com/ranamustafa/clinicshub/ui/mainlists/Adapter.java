@@ -13,8 +13,7 @@ import com.bumptech.glide.Glide;
 import com.ranamustafa.clinicshub.R;
 import com.ranamustafa.clinicshub.data.api.ApiClient;
 import com.ranamustafa.clinicshub.data.model.ListModel;
-import com.ranamustafa.clinicshub.ui.main.MainActivity;
-import com.ranamustafa.clinicshub.utils.AppLogger;
+import com.ranamustafa.clinicshub.utils.errors.ErrorHandler;
 
 import java.util.Objects;
 
@@ -78,7 +77,7 @@ public class Adapter extends ListAdapter<ListModel, Adapter.ProjectViewHolder> {
                 itemView.setOnClickListener(v -> listener.onProjectClick(project));
             }catch (Exception e)
             {
-                AppLogger.logError(TAG, "bind",e);
+                ErrorHandler.handle(TAG, e);
             }
         }
     }

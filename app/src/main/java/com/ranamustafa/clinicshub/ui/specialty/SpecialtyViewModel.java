@@ -3,7 +3,7 @@ package com.ranamustafa.clinicshub.ui.specialty;
 
 import com.ranamustafa.clinicshub.data.model.SpecialtyModel;
 import com.ranamustafa.clinicshub.data.repository.SpecialityRepository;
-import com.ranamustafa.clinicshub.utils.AppLogger;
+import com.ranamustafa.clinicshub.utils.errors.ErrorHandler;
 
 import java.util.List;
 
@@ -52,8 +52,7 @@ public class SpecialtyViewModel extends androidx.lifecycle.ViewModel {
                 }
             }, ClinicID);
         } catch (Exception e) {
-            AppLogger.logError(TAG, "loadData", e);
+            ErrorHandler.handle(TAG, e);
         }
-
     }
 }

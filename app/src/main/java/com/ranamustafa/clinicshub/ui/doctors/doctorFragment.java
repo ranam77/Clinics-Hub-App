@@ -1,6 +1,7 @@
 
 package com.ranamustafa.clinicshub.ui.doctors;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +12,8 @@ import android.widget.TextView;
 
 import com.ranamustafa.clinicshub.R;
 import com.ranamustafa.clinicshub.data.model.DoctorModel;
-import com.ranamustafa.clinicshub.data.model.ListModel;
-import com.ranamustafa.clinicshub.utils.AppLogger;
+import com.ranamustafa.clinicshub.utils.SessionManager;
+import com.ranamustafa.clinicshub.utils.errors.ErrorHandler;
 
 import java.util.List;
 
@@ -21,6 +22,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -78,17 +80,38 @@ public class doctorFragment extends androidx.fragment.app.Fragment {
         try{
             recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 2));
             adapter = new doctorAdapter(item -> {
-                Bundle bundle = new Bundle();
-                bundle.putInt("DoctorID", item.getId());
-                NavController navController = Navigation.findNavController(requireView());
-                navController.navigate(R.id.specialtyFragment, bundle);
+                if( new SessionManager(getContext()).isLoggedIn())
+                {
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("DoctorID", item.getId());
+                    NavController navController = Navigation.findNavController(requireView());
+                    navController.navigate(R.id.slotsFragment, bundle);
+                }
+                else {
+                    showLoginRequiredDialog();
+
+                }
+
             });
             recyclerView.setAdapter(adapter);
         } catch (Exception e) {
-            AppLogger.logError(TAG, "setupRecyclerView",e);
+            ErrorHandler.handle(TAG, e);
         }
     }
+    private void showLoginRequiredDialog() {
 
+        new AlertDialog.Builder(requireContext())
+                .setTitle(getString(R.string.dialogtitle))
+                .setMessage(R.string.dialogloginmsg)
+                .setPositiveButton(getString(R.string.dialogbtn), (dialog, which) -> {
+                    NavHostFragment.findNavController(this).navigate(R.id.loginFragment);
+                })
+                .setNegativeButton(getString(R.string.cancelbtn), (dialog, which) -> {
+                    dialog.dismiss();
+                })
+                .setCancelable(false)
+                .show();
+    }
     private void setupViewModel() {
         viewModel = new ViewModelProvider(this).get(doctorViewModel.class);
     }
@@ -102,9 +125,8 @@ public class doctorFragment extends androidx.fragment.app.Fragment {
         }
         catch (Exception e)
         {
-            AppLogger.logError(TAG, "observeViewModel",e);
+            ErrorHandler.handle(TAG, e);
         }
-
     }
 
     private void update (List<DoctorModel> data) {
@@ -116,7 +138,7 @@ public class doctorFragment extends androidx.fragment.app.Fragment {
         }
         catch (Exception e)
         {
-            AppLogger.logError(TAG, "update",e);
+            ErrorHandler.handle(TAG, e);
         }
 
     }

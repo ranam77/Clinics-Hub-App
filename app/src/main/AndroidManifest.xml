@@ -14,6 +14,7 @@
         android:theme="@style/Theme.ClinicsHub">
     <!-- TEMP use usesCleartextTraffic-->
         <activity
+            android:windowSoftInputMode="adjustResize"
             android:name=".ui.main.MainActivity"
             android:exported="true">
             <intent-filter>

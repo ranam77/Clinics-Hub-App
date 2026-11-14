@@ -1,7 +1,6 @@
 package com.ranamustafa.clinicshub.data.api;
 
-import com.ranamustafa.clinicshub.data.repository.ClinicRepository;
-import com.ranamustafa.clinicshub.utils.AppLogger;
+import com.ranamustafa.clinicshub.utils.errors.ErrorHandler;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -25,7 +24,7 @@ public class ApiClient {
                 apiService = retrofit.create(ApiService.class);
             }
         }catch (Exception e) {
-            AppLogger.logError(TAG, "getApiService",e);
+            ErrorHandler.handle(TAG, e);
         }
 
         return apiService;

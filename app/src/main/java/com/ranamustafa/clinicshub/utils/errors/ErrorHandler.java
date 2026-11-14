@@ -1,8 +1,9 @@
-package com.ranamustafa.clinicshub.utils.network;
+package com.ranamustafa.clinicshub.utils.errors;
 
-public class ApiErrorHandler {
+import com.ranamustafa.clinicshub.utils.SessionManager;
 
-    public static ApiResult<?> handle(Exception throwable) {
+public class ErrorHandler {
+    public static ApiResult<?> handle(String contextname  ,Exception throwable) {
 
         if (throwable instanceof java.net.UnknownHostException) {
             return ApiResult.error(
@@ -18,15 +19,16 @@ public class ApiErrorHandler {
         }
     }
 
-    public static ApiResult<?> handleHttpError(int code) {
-
+    public static ApiResult<?> handleHttpError(String contextname  ,int code) {
         switch (code) {
             case 400:
                 return ApiResult.error("Invalid request.", code);
 
             case 401:
+            {
                 return ApiResult.error("Session expired. Please login again.", code);
 
+            }
             case 403:
                 return ApiResult.error("You don't have permission.", code);
 
@@ -41,5 +43,9 @@ public class ApiErrorHandler {
             default:
                 return ApiResult.error("Request failed. Please try again.", code);
         }
+    }
+
+    public static ApiResult<?> handleThrowable(String contextname  ,Throwable t) {
+        return ApiResult.error(t.getMessage(), 000);
     }
 }

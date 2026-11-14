@@ -11,8 +11,7 @@ import com.bumptech.glide.Glide;
 import com.ranamustafa.clinicshub.R;
 import com.ranamustafa.clinicshub.data.api.ApiClient;
 import com.ranamustafa.clinicshub.data.model.SpecialtyModel;
-import com.ranamustafa.clinicshub.ui.mainlists.ViewModel;
-import com.ranamustafa.clinicshub.utils.AppLogger;
+import com.ranamustafa.clinicshub.utils.errors.ErrorHandler;
 
 import java.util.Objects;
 
@@ -83,7 +82,7 @@ public class SpecialtyAdapter extends ListAdapter<SpecialtyModel, SpecialtyAdapt
             }
             catch (Exception e)
             {
-                AppLogger.logError(TAG, "bind",e);
+                ErrorHandler.handle(TAG, e);
             }
 
         }
