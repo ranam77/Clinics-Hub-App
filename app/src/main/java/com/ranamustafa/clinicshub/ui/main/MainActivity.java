@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -82,6 +83,15 @@ public class MainActivity extends AppCompatActivity {
 
                     return true;
                 }
+                if (id == R.id.appointments) {
+                    if (sessionManager.isLoggedIn()) {
+                        Bundle bundle = new Bundle();
+                        navController.navigate(R.id.appointmentsFragment, bundle);
+                    } else {
+                        Toast.makeText(this, getString(R.string.loginf), Toast.LENGTH_SHORT).show();
+                    }
+                    return true;
+                }
 
                 return false;
             });
@@ -99,16 +109,19 @@ public static void returnhome(NavController n)
 }
     private void updateLoginMenuItem() {
         MenuItem loginItem = bottomMenu.getMenu().findItem(R.id.login);
+        MenuItem AppointmentsItem = bottomMenu.getMenu().findItem(R.id.appointments);
         if (loginItem == null) return;
         if (sessionManager.isLoggedIn()) {
             loginItem.setTitle(R.string.logout);
             loginItem.setIcon(R.drawable.ic_logout);
             tvUserHeader.setText(String.format("Welcome, %s", sessionManager.getPatientFullName()));
             tvUserHeader.setVisibility(View.VISIBLE);
+            AppointmentsItem.setVisible(true);
         } else {
             loginItem.setTitle(R.string.login);
             loginItem.setIcon(R.drawable.ic_login);
             tvUserHeader.setVisibility(View.GONE);
+            AppointmentsItem.setVisible(false);
         }
     }
 }

@@ -1,6 +1,7 @@
 
 package com.ranamustafa.clinicshub.ui.slots;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.ranamustafa.clinicshub.R;
+import com.ranamustafa.clinicshub.data.model.BookingResponse;
 import com.ranamustafa.clinicshub.data.model.DoctorModel;
 import com.ranamustafa.clinicshub.data.model.SlotListItem;
 import com.ranamustafa.clinicshub.data.model.SlotModel;
@@ -30,6 +32,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -86,7 +89,7 @@ public class slotsFragment extends androidx.fragment.app.Fragment {
     private void setupRecyclerView() {
         try{
                 adapter = new slotsAdapter(item -> {
-                    // Handle selected slot here
+                    showBookConfirmation(item);
                 });
 
                 GridLayoutManager layoutManager = new GridLayoutManager(requireContext(), 3);
@@ -94,8 +97,7 @@ public class slotsFragment extends androidx.fragment.app.Fragment {
                         new GridLayoutManager.SpanSizeLookup() {
                             @Override
                             public int getSpanSize(int position) {
-                                return adapter.getItemViewType(position)
-                                        == SlotListItem.TYPE_DAY ? 3 : 1;
+                                return adapter.getItemViewType(position) == SlotListItem.TYPE_DAY ? 3 : 1;
                             }
                         });
 
@@ -106,7 +108,35 @@ public class slotsFragment extends androidx.fragment.app.Fragment {
             ErrorHandler.handle(TAG, e);
         }
     }
+    private void showBookConfirmation(SlotModel s) {
 
+        String dateTime = s.getStartsAt();
+        String date = dateTime.substring(0, 10);
+        String time = dateTime.substring(11, 16);
+        String message = getString(R.string.confirmmsgstart)
+                + getString(R.string.confirmmsgstartdate) + date + "\n"
+                + getString(R.string.confirmmsgstarttime) + time + "\n";
+        new AlertDialog.Builder(requireContext())
+                .setTitle(getString(R.string.bookingdialogtitle))
+                .setMessage(message)
+                .setPositiveButton(getString(R.string.btnbook), (dialog, which) -> {
+                    viewModel.bookSlot(getActivity(), s.getId(), session.getPatientId(), new slotsViewModel.Callback() {
+                        @Override
+                        public void onfinish(BookingResponse res) {
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("BookingResponse", res);
+                            NavController navController = Navigation.findNavController(requireView());
+                            navController.navigate(R.id.appointmentsFragment, bundle);
+
+                        }
+                    });
+                })
+                .setNegativeButton(getString(R.string.cancelbtn), (dialog, which) -> {
+                    dialog.dismiss();
+                })
+                .setCancelable(false)
+                .show();
+    }
     private void setupViewModel() {
         viewModel = new ViewModelProvider(this).get(slotsViewModel.class);
     }
@@ -116,7 +146,6 @@ public class slotsFragment extends androidx.fragment.app.Fragment {
             viewModel.getData().observe(getViewLifecycleOwner(), this::update );
             viewModel.getLoading().observe(getViewLifecycleOwner(), this::updateLoading);
             viewModel.getError().observe(getViewLifecycleOwner(), this::updateError);
-
             btnRetry.setOnClickListener(v -> viewModel.loadData(getContext(), DoctorID));
         }
         catch (Exception e)
@@ -124,7 +153,6 @@ public class slotsFragment extends androidx.fragment.app.Fragment {
             ErrorHandler.handle(TAG, e);
         }
     }
-
     private void update (List<SlotModel> data) {
         try{
             List<SlotListItem> groupedItems = groupSlotsByDay(data);
@@ -139,7 +167,6 @@ public class slotsFragment extends androidx.fragment.app.Fragment {
         }
 
     }
-
     private void updateLoading(Boolean isLoading) {
         boolean loading = Boolean.TRUE.equals(isLoading);
         progressBar.setVisibility(loading ? View.VISIBLE : View.GONE);
@@ -153,43 +180,29 @@ public class slotsFragment extends androidx.fragment.app.Fragment {
         }
     }
     private List<SlotListItem> groupSlotsByDay(List<SlotModel> slots) {
-
         Map<String, List<SlotModel>> grouped = new TreeMap<>();
-
         for (SlotModel slot : slots) {
-
             String date = slot.getStartsAt().substring(0, 10);
-
-            grouped.computeIfAbsent(date, k -> new ArrayList<>())
-                    .add(slot);
+            grouped.computeIfAbsent(date, k -> new ArrayList<>()).add(slot);
         }
 
         List<SlotListItem> items = new ArrayList<>();
-
-        SimpleDateFormat inputFormat =
-                new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-
-        SimpleDateFormat outputFormat =
-                new SimpleDateFormat("EEEE, dd MMMM", Locale.getDefault());
-
+        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        SimpleDateFormat outputFormat = new SimpleDateFormat("EEEE, dd MMMM", Locale.getDefault());
         for (Map.Entry<String, List<SlotModel>> entry : grouped.entrySet()) {
-
             String formattedDate;
-
             try {
                 Date date = inputFormat.parse(entry.getKey());
                 formattedDate = outputFormat.format(date);
             } catch (ParseException e) {
                 formattedDate = entry.getKey();
             }
-
-            items.add(SlotListItem.day(formattedDate));
+            items.add(new SlotListItem(SlotListItem.TYPE_DAY , formattedDate , null));
 
             for (SlotModel slot : entry.getValue()) {
                 items.add(SlotListItem.slot(slot));
             }
         }
-
         return items;
     }
 }

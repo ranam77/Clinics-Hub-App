@@ -99,7 +99,6 @@ public class doctorFragment extends androidx.fragment.app.Fragment {
         }
     }
     private void showLoginRequiredDialog() {
-
         new AlertDialog.Builder(requireContext())
                 .setTitle(getString(R.string.dialogtitle))
                 .setMessage(R.string.dialogloginmsg)

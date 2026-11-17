@@ -1,10 +1,14 @@
 package com.ranamustafa.clinicshub.data.api;
 
-import com.ranamustafa.clinicshub.data.model.ApiResponse;
+import com.ranamustafa.clinicshub.data.model.AppointmentModel;
+import com.ranamustafa.clinicshub.data.model.BookingCancelResponse;
+import com.ranamustafa.clinicshub.data.model.BookingRequest;
+import com.ranamustafa.clinicshub.data.model.BookingResponse;
 import com.ranamustafa.clinicshub.data.model.DoctorModel;
 import com.ranamustafa.clinicshub.data.model.ListModel;
 import com.ranamustafa.clinicshub.data.model.LoginRequest;
 import com.ranamustafa.clinicshub.data.model.LoginResponse;
+import com.ranamustafa.clinicshub.data.model.PatientRequest;
 import com.ranamustafa.clinicshub.data.model.SlotModel;
 import com.ranamustafa.clinicshub.data.model.SlotRequest;
 import com.ranamustafa.clinicshub.data.model.SpecialtyModel;
@@ -32,6 +36,16 @@ public interface ApiService {
 
     @POST("api/slots/validSlotes")
      Call<List<SlotModel>> getSlots(@Header("Authorization") String token, @Body SlotRequest slotRequest);
+    @POST("api/bookings/new")
+    Call<BookingResponse> bookSlot(@Header("Authorization") String token, @Body BookingRequest Request);
+
+    @POST("api/Patients/bookings")
+    Call<List<AppointmentModel>> getBookings(@Header("Authorization") String token, @Body PatientRequest user);
+    @POST("api/bookings/{bookingref}/cancel")
+    Call<BookingCancelResponse> cancelBooking(@Header("Authorization") String token, @Path("bookingref") String bookingref);
+
+
+
 
 
 

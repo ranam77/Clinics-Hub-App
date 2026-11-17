@@ -10,6 +10,11 @@ ClinicsHub is an Android application project designed to showcase clinic-related
 
 The application is currently under development.
 
+## Users Login credentials 
+- username : rana
+- password : ranarana
+
+
 ## Current Features
 
 - Projects listing screen.

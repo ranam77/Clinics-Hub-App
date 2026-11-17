@@ -7,6 +7,8 @@ import android.util.Log;
 import com.ranamustafa.clinicshub.data.api.ApiClient;
 import com.ranamustafa.clinicshub.data.api.ApiService;
 import com.ranamustafa.clinicshub.data.model.ApiResponse;
+import com.ranamustafa.clinicshub.data.model.BookingRequest;
+import com.ranamustafa.clinicshub.data.model.BookingResponse;
 import com.ranamustafa.clinicshub.data.model.DoctorModel;
 import com.ranamustafa.clinicshub.data.model.SlotModel;
 import com.ranamustafa.clinicshub.data.model.SlotRequest;
@@ -26,6 +28,7 @@ public class SlotRepository {
     private static final String TAG = SlotRepository.class.getSimpleName();
     public interface  Callback {
         void onSuccess(List<SlotModel> data);
+        void onSuccess(BookingResponse  data);
         void onError(String message);
     }
 
@@ -74,6 +77,51 @@ public class SlotRepository {
             }catch (Exception e)
             {
                  ErrorHandler.handle(TAG ,e);
+            }
+        }
+
+    }
+
+    public void bookSlot(Callback callback , BookingRequest  request , Context mContext) {
+        if(apiService!= null)
+        {
+            try
+            {
+                String token = new SessionManager(mContext).getToken();
+                apiService.bookSlot("Bearer " + token , request).enqueue(new retrofit2.Callback<BookingResponse>() {
+                    @Override
+                    public void onResponse(Call<BookingResponse> call, Response<BookingResponse> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            callback.onSuccess(response.body());
+                        } else {
+                            if(response.code() == 401)
+                            {
+                                generalutils.logout(mContext);
+                            }
+                            ApiResult<?> apiResult =  ErrorHandler.handleHttpError(TAG ,response.code());
+                            callback.onError(apiResult.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<BookingResponse> call, Throwable t) {
+                        String message = "";
+                        if (t instanceof Exception) {
+                            Exception exception = (Exception) t;
+                            ApiResult<?> apiResult = ErrorHandler.handle(TAG ,exception);
+                            message = apiResult.getMessage();
+                        }
+                        else
+                        {
+                            ApiResult<?> apiResult =  ErrorHandler.handleThrowable(TAG ,t);
+                            message = apiResult.getMessage();
+                        }
+                        callback.onError(message);
+                    }
+                });
+            }catch (Exception e)
+            {
+                ErrorHandler.handle(TAG ,e);
             }
         }
 

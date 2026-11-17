@@ -19,9 +19,15 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.ranamustafa.clinicshub.ui.auth.loginFragment"
-        android:label="Doctor" />
+        android:label="Login" />
     <fragment
         android:id="@+id/slotsFragment"
         android:name="com.ranamustafa.clinicshub.ui.slots.slotsFragment"
         android:label="Slots" />
+    <fragment
+        android:id="@+id/appointmentsFragment"
+        android:name="com.ranamustafa.clinicshub.ui.appointments.appointmentsFragment"
+        android:label="My Appointments" />
+
+
 </navigation>

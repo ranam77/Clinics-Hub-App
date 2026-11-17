@@ -50,4 +50,18 @@
     <string name="dialogloginmsg">Please login first to view available appointment slots.</string>
     <string name="dialogbtn">Go to Login</string>
     <string name="cancelbtn">Cancel</string>
+    <string name="bookingdialogtitle">Booking Confirmation</string>
+    <string name="confirmmsgstart">Are you sure you want to book this appointment?\\n\\n</string>
+    <string name="confirmmsgstartdate">"Date: "</string>
+    <string name="confirmmsgstarttime">"Time: "</string>
+    <string name="btnbook">Book</string>
+    <string name="bookingcanceldialogtitle">Cancelation confirm</string>
+    <string name="cancelbookingdialogtitle">Are you sure tou want to cancel Booking Ref :</string>
+    <string name="cancelbookingdialogtext">Are you sure you want to cancel booking ref :</string>
+    <string name="myappointments">My Appointments</string>
+    <string name="my_appointments">My Appointments</string>
+    <string name="loginf">Please login first</string>
+    <string name="canceled">Canceled\n</string>
+    <string name="cancelabtn">Cancel Appointment</string>
+    <string name="cancelappbtn">Cancel Appointment</string>
 </resources>
